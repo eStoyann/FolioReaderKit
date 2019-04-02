@@ -1527,7 +1527,7 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
         
         return bounds
     }
-    
+
 }
 extension FolioReaderCenter: GenericDelegate {
     public func reloadData(target: AnyObject?, data: Any?) {

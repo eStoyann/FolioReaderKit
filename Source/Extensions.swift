@@ -203,7 +203,7 @@ internal extension UIColor {
     }
 }
 
-internal extension String {
+public extension String {
     /// Truncates the string to length number of characters and
     /// appends optional trailing string if longer
     func truncate(_ length: Int, trailing: String? = nil) -> String {

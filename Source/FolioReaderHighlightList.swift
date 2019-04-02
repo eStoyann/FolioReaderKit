@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FolioReaderHighlightList: UITableViewController {
+public class FolioReaderHighlightList: UITableViewController {
 
     weak open var genericDelegate: GenericDelegate?
 
@@ -27,7 +27,7 @@ class FolioReaderHighlightList: UITableViewController {
         fatalError("init with coder not supported")
     }
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: kReuseCellIdentifier)
@@ -45,15 +45,15 @@ class FolioReaderHighlightList: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return highlights.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kReuseCellIdentifier, for: indexPath)
         cell.backgroundColor = UIColor.clear
 
@@ -116,7 +116,7 @@ class FolioReaderHighlightList: UITableViewController {
         highlightLabel.attributedText = text
         highlightLabel.sizeToFit()
         highlightLabel.frame = CGRect(x: 20, y: 46, width: view.frame.width-40, height: highlightLabel.frame.height)
-        
+
         // Note text if it exists
         if let note = highlight.noteForHighlight {
             var noteLabel: UILabel!
@@ -131,7 +131,7 @@ class FolioReaderHighlightList: UITableViewController {
             } else {
                 noteLabel = cell.contentView.viewWithTag(789) as? UILabel
             }
-            
+
             noteLabel.text = note
             noteLabel.sizeToFit()
             noteLabel.frame = CGRect(x: 20, y: 46 + highlightLabel.frame.height + 10, width: view.frame.width-40, height: noteLabel.frame.height)
@@ -141,11 +141,11 @@ class FolioReaderHighlightList: UITableViewController {
 
         cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
-        
+
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let highlight = highlights[indexPath.row]
 
         let cleanString = highlight.content.stripHtml().truncate(250, trailing: "...").stripLineBreaks()
@@ -161,7 +161,7 @@ class FolioReaderHighlightList: UITableViewController {
                                   context: nil)
 
         var totalHeight = s.size.height + 66
-        
+
         if let note = highlight.noteForHighlight {
             let noteLabel = UILabel()
             noteLabel.frame = CGRect(x: 20, y: 46 , width: view.frame.width-40, height: CGFloat.greatestFiniteMagnitude)
@@ -169,7 +169,7 @@ class FolioReaderHighlightList: UITableViewController {
             noteLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             noteLabel.numberOfLines = 0
             noteLabel.font = UIFont.systemFont(ofSize: 14)
-            
+
             noteLabel.sizeToFit()
             totalHeight += noteLabel.frame.height
         }
@@ -179,7 +179,7 @@ class FolioReaderHighlightList: UITableViewController {
 
     // MARK: - Table view delegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let highlight = highlights[safe: indexPath.row] else { return }
 
         self.folioReader.readerCenter?.changePageWith(page: highlight.page, andFragment: highlight.highlightId)
@@ -187,7 +187,7 @@ class FolioReaderHighlightList: UITableViewController {
         self.genericDelegate?.reloadData(target: self, data: highlight)
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let highlight = highlights[safe: indexPath.row] else { return }
 
@@ -201,11 +201,11 @@ class FolioReaderHighlightList: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-    
+
+
     // MARK: - Handle rotation transition
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         tableView.reloadData()
     }
 }

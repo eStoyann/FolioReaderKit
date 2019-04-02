@@ -652,3 +652,35 @@ var onClassBasedListenerClick = function(schemeName, attributeContent) {
 	// Set the custom link URL to the event
 	window.location = schemeName + "://" + attributeContent + positionParameterString;
 }
+//----------------------------
+function getSelectionParentElement() {
+    var parentEl = null, sel;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            parentEl = sel.getRangeAt(0).commonAncestorContainer;
+            if (parentEl.nodeType != 1) {
+                parentEl = parentEl.parentNode;
+            }
+        }
+    } else if ( (sel = document.selection) && sel.type != "Control") {
+        parentEl = sel.createRange().parentElement();
+    }
+    return parentEl;
+}
+//------------------------------
+function getAllTextInColumn(x,y,width,height) {
+    if (document.caretRangeFromPoint) {
+        var caretRangeStart = document.caretRangeFromPoint(x, y);
+        var caretRangeEnd = document.caretRangeFromPoint(x + (width - 1), y + (height - 1));
+    } else {
+        return null;
+    }
+    if (caretRangeStart == null || caretRangeEnd == null) {
+        return null;
+    }
+    var range = document.createRange();
+    range.setStart(caretRangeStart.startContainer, caretRangeStart.startOffset);
+    range.setEnd(caretRangeEnd.endContainer, caretRangeEnd.endOffset);
+    return range.toString();
+}

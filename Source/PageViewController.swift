@@ -13,7 +13,7 @@ class PageViewController: UIPageViewController {
     var segmentedControl: UISegmentedControl!
     var viewList = [UIViewController]()
     var segmentedControlItems = [String]()
-    var viewControllerOne: UIViewController!
+//    var viewControllerOne: UIViewController!
     var viewControllerTwo: UIViewController!
     var index: Int
     fileprivate var readerConfig: FolioReaderConfig
@@ -39,15 +39,16 @@ class PageViewController: UIPageViewController {
         super.viewDidLoad()
 
         segmentedControl = UISegmentedControl(items: segmentedControlItems)
-        segmentedControl.addTarget(self, action: #selector(PageViewController.didSwitchMenu(_:)), for: UIControl.Event.valueChanged)
+        segmentedControl.addTarget(self, action: #selector(didSwitchMenu(_:)), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = index
         segmentedControl.setWidth(100, forSegmentAt: 0)
-        segmentedControl.setWidth(100, forSegmentAt: 1)
+        //        segmentedControl.setWidth(100, forSegmentAt: 1)
         self.navigationItem.titleView = segmentedControl
 
-        viewList = [viewControllerOne, viewControllerTwo]
+        viewList = [viewControllerTwo]
+        //        viewControllerOne,
 
-        viewControllerOne.didMove(toParent: self)
+        //        viewControllerOne.didMove(toParent: self)
         viewControllerTwo.didMove(toParent: self)
 
         self.delegate = self

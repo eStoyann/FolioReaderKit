@@ -10,6 +10,8 @@ import UIKit
 
 class FolioReaderHighlightList: UITableViewController {
 
+    weak open var genericDelegate: GenericDelegate?
+
     fileprivate var highlights = [Highlight]()
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -182,6 +184,7 @@ class FolioReaderHighlightList: UITableViewController {
 
         self.folioReader.readerCenter?.changePageWith(page: highlight.page, andFragment: highlight.highlightId)
         self.dismiss()
+        self.genericDelegate?.reloadData(target: self, data: highlight)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

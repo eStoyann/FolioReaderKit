@@ -70,6 +70,7 @@ public enum FolioReaderFontSize: Int {
 class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRecognizerDelegate {
     var menuView: UIView!
 
+    weak var dismissMenuDelegate: GenericDelegate?
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
 
@@ -314,6 +315,7 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         if (self.readerConfig.shouldHideNavigationOnTap == false) {
             self.folioReader.readerCenter?.showBars()
         }
+        self.dismissMenuDelegate?.reloadData(target: nil, data: nil)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

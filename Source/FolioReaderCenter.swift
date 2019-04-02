@@ -32,6 +32,11 @@ import ZFDragableModalTransition
 
 }
 
+public protocol GenericDelegate: AnyObject {
+    func reloadData(target: AnyObject?, data: Any?)
+}
+
+
 /// The base reader class
 open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -46,6 +51,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     /// The current visible page on reader
     open fileprivate(set) var currentPage: FolioReaderPage?
+
+    //custom implemetnation
+    open weak var generalDelegate: GenericDelegate?
+    open var menuAppeared: Bool { return self.fontsMenuIsAppeared }
+    open var pageSize: CGSize { return CGSize(width: self.pageWidth, height: self.pageHeight) }
+    open var allPages: Int { return totalPages }
+    var fontsMenuIsAppeared: Bool = false
 
     /// The collection view with pages
     open var collectionView: UICollectionView!
@@ -380,6 +392,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
             let pageOffsetPoint = self.readerConfig.isDirection(CGPoint(x: 0, y: pageOffset), CGPoint(x: pageOffset, y: 0), CGPoint(x: 0, y: pageOffset))
             pageScrollView.setContentOffset(pageOffsetPoint, animated: true)
+
+            self.generalDelegate?.reloadData(target: self, data: nil)
         }
     }
 
@@ -521,6 +535,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     override open func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         guard folioReader.isReaderReady else { return }
 
+        if self.fontsMenuIsAppeared {
+            self.dismiss()
+        }
+
         setPageSize(toInterfaceOrientation)
         updateCurrentPage()
 
@@ -588,6 +606,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let pageOffsetPoint = self.readerConfig.isDirection(CGPoint(x: 0, y: pageOffset), CGPoint(x: pageOffset, y: 0), CGPoint(x: 0, y: pageOffset))
         currentPage.webView?.scrollView.setContentOffset(pageOffsetPoint, animated: true)
+
+        self.generalDelegate?.reloadData(target: self, data: pageOffsetPoint)
     }
 
     override open func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
@@ -1333,11 +1353,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
         let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
+        highlight.genericDelegate = self
         let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
 
-        pageController.viewControllerOne = chapter
+        //        pageController.viewControllerOne = chapter
         pageController.viewControllerTwo = highlight
-        pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
+        pageController.segmentedControlItems = [readerConfig.localizedHighlightsTitle]
+        //        readerConfig.localizedContentsTitle,
 
         let nav = UINavigationController(rootViewController: pageController)
         present(nav, animated: true, completion: nil)
@@ -1352,6 +1374,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let menu = FolioReaderFontsMenu(folioReader: folioReader, readerConfig: readerConfig)
         menu.modalPresentationStyle = .custom
+        menu.dismissMenuDelegate = self
 
         animator = ZFModalTransitionAnimator(modalViewController: menu)
         animator.isDragable = false
@@ -1505,4 +1528,10 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
         return bounds
     }
     
+}
+extension FolioReaderCenter: GenericDelegate {
+    public func reloadData(target: AnyObject?, data: Any?) {
+        self.fontsMenuIsAppeared = false
+        self.generalDelegate?.reloadData(target: target, data: data)
+    }
 }

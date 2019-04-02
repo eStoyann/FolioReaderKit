@@ -106,7 +106,7 @@ open class FolioReader: NSObject {
 
     /// FolioReaderDelegate
     open weak var delegate: FolioReaderDelegate?
-    
+    open weak var genericDelegate: GenericDelegate?
     open weak var readerContainer: FolioReaderContainer?
     open weak var readerAudioPlayer: FolioReaderAudioPlayer?
     open weak var readerCenter: FolioReaderCenter? {
@@ -209,8 +209,15 @@ extension FolioReader {
             return font
         }
         set (font) {
-            self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
-            _ = self.readerCenter?.currentPage?.webView?.js("setFontName('\(font.cssIdentifier)')")
+            if let storedFont = self.defaults.value(forKey: kCurrentFontFamily) as? Int,
+                font.rawValue != storedFont {
+
+                self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
+                _ = self.readerCenter?.currentPage?.webView?.js("setFontName('\(font.cssIdentifier)')")
+
+            } else {
+                self.genericDelegate?.reloadData(target: self, data: false)
+            }
         }
     }
 
@@ -231,8 +238,11 @@ extension FolioReader {
             guard let currentPage = self.readerCenter?.currentPage else {
                 return
             }
-
             currentPage.webView?.js("setFontSize('\(currentFontSize.cssIdentifier)')")
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.genericDelegate?.reloadData(target: self, data: true)
+            }
         }
     }
 

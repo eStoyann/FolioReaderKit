@@ -1385,6 +1385,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         animator.direction = ZFModalTransitonDirection.bottom
 
         menu.transitioningDelegate = animator
+        self.fontsMenuIsAppeared = true
         self.present(menu, animated: true, completion: nil)
     }
 
@@ -1407,6 +1408,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         animator.direction = ZFModalTransitonDirection.bottom
 
         menu.transitioningDelegate = animator
+        self.fontsMenuIsAppeared = true
         present(menu, animated: true, completion: nil)
     }
 

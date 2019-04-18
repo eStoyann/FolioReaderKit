@@ -14,6 +14,8 @@ class FolioReaderPlayerMenu: UIViewController, SMSegmentViewDelegate, UIGestureR
     var playPauseBtn: UIButton!
     var styleOptionBtns = [UIButton]()
     var viewDidAppear = false
+    
+    weak var dismissMenuDelegate: GenericDelegate?
 
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -277,6 +279,7 @@ class FolioReaderPlayerMenu: UIViewController, SMSegmentViewDelegate, UIGestureR
         if (self.readerConfig.shouldHideNavigationOnTap == false) {
             self.folioReader.readerCenter?.showBars()
         }
+        self.dismissMenuDelegate?.reloadData(target: nil, data: nil)
     }
     
     // MARK: - Gestures

@@ -209,15 +209,9 @@ extension FolioReader {
             return font
         }
         set (font) {
-            if let storedFont = self.defaults.value(forKey: kCurrentFontFamily) as? Int,
-                font.rawValue != storedFont {
-
-                self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
-                _ = self.readerCenter?.currentPage?.webView?.js("setFontName('\(font.cssIdentifier)')")
-
-            } else {
-                self.genericDelegate?.reloadData(target: self, data: false)
-            }
+            self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
+            
+            _ = self.readerCenter?.currentPage?.webView?.js("setFontName('\(font.cssIdentifier)')")
         }
     }
 
@@ -234,15 +228,14 @@ extension FolioReader {
         }
         set (value) {
             self.defaults.set(value.rawValue, forKey: kCurrentFontSize)
-
+            
             guard let currentPage = self.readerCenter?.currentPage else {
                 return
             }
             currentPage.webView?.js("setFontSize('\(currentFontSize.cssIdentifier)')")
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.genericDelegate?.reloadData(target: self, data: true)
-            }
+            
+            self.genericDelegate?.reloadData(target: self, data: true)
+            
         }
     }
 

@@ -1399,7 +1399,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let menu = FolioReaderPlayerMenu(folioReader: folioReader, readerConfig: readerConfig)
         menu.modalPresentationStyle = .custom
-
+        menu.dismissMenuDelegate = self
+        
         animator = ZFModalTransitionAnimator(modalViewController: menu)
         animator.isDragable = true
         animator.bounces = false

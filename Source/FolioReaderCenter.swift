@@ -537,6 +537,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         if self.fontsMenuIsAppeared {
             self.dismiss()
+            self.fontsMenuIsAppeared = false
         }
 
         setPageSize(toInterfaceOrientation)

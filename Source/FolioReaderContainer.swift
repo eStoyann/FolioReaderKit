@@ -192,6 +192,7 @@ open class FolioReaderContainer: UIViewController {
      */
     func addAudioPlayer() {
         self.audioPlayer = FolioReaderAudioPlayer(withFolioReader: self.folioReader, book: self.book)
+        
         self.folioReader.readerAudioPlayer = audioPlayer
     }
 

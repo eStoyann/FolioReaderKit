@@ -444,6 +444,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
                 } else if avoidBeginningAnchors && !isBeginning {
                     scrollPageToOffset(offset, animated: animated)
                 }
+                scrollPageToOffset(offset, animated: animated)
             case .horizontal, .horizontalWithVerticalContent:
                 scrollPageToOffset(offset, animated: animated)
             }

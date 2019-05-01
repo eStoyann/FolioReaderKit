@@ -212,12 +212,12 @@ extension FolioReader {
             if let storedFont = self.defaults.value(forKey: kCurrentFontFamily) as? Int,
                 font.rawValue != storedFont {
                 
-                self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
                 _ = self.readerCenter?.currentPage?.webView?.js("setFontName('\(font.cssIdentifier)')")
                 
             } else {
                 self.genericDelegate?.reloadData(target: self, data: false)
             }
+            self.defaults.set(font.rawValue, forKey: kCurrentFontFamily)
         }
     }
 

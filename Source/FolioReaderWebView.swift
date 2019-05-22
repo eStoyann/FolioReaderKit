@@ -58,11 +58,11 @@ open class FolioReaderWebView: UIWebView {
             return false
         } else {
             if (action == #selector(highlight(_:)) && Highlight.all(withConfiguration: self.readerConfig).count <= 30)
-                || action == #selector(highlightWithNote(_:))
-                || action == #selector(updateHighlightNote(_:))
-                || (action == #selector(define(_:)) && isOneWord)
-                || (action == #selector(play(_:)) && (book.hasAudio || readerConfig.enableTTS))
-                || (action == #selector(share(_:)) && readerConfig.allowSharing)
+//                || action == #selector(highlightWithNote(_:))
+//                || action == #selector(updateHighlightNote(_:))
+//                || (action == #selector(define(_:)) && isOneWord)
+//                || (action == #selector(play(_:)) && (book.hasAudio || readerConfig.enableTTS))
+//                || (action == #selector(share(_:)) && readerConfig.allowSharing)
                 //|| (action == #selector(copy(_:)) && readerConfig.allowSharing)
             {
                 return true

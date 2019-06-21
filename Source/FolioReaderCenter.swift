@@ -57,6 +57,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open var menuAppeared: Bool { return self.fontsMenuIsAppeared }
     open var pageSize: CGSize { return CGSize(width: self.pageWidth, height: self.pageHeight) }
     open var allPages: Int { return totalPages }
+    open var disableScrabberInteraction = false
     var fontsMenuIsAppeared: Bool = false
 
     /// The collection view with pages
@@ -204,6 +205,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         guard let readerContainer = readerContainer else { return }
         self.scrollScrubber = ScrollScrubber(frame: frameForScrollScrubber(), withReaderContainer: readerContainer)
+        self.scrollScrubber?.slider.isUserInteractionEnabled = disableScrabberInteraction
         self.scrollScrubber?.delegate = self
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)

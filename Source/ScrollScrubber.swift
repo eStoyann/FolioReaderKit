@@ -85,6 +85,7 @@ class ScrollScrubber: NSObject, UIScrollViewDelegate {
         super.init()
 
         slider = UISlider()
+        slider.isUserInteractionEnabled = false
         slider.layer.anchorPoint = CGPoint(x: 0, y: 0)
         slider.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
         slider.alpha = 0

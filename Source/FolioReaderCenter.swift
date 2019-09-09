@@ -67,6 +67,22 @@ extension Double {
     }
 }
 
+let numberFormatter: NumberFormatter = {
+    
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.groupingSeparator = "."
+    
+    return formatter
+}()
+extension NumberFormatter {
+    
+    func string(_ value: Int) -> String? {
+        
+        return string(from: NSNumber(value: value))
+    }
+}
+
 
 
 /// The base reader class

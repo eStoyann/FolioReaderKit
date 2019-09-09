@@ -53,6 +53,30 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open fileprivate(set) var currentPage: FolioReaderPage?
 
     //custom implemetnation
+    open var ravenButtonTitle: String = "" {
+        didSet {
+            
+            let btn = configureButton(withTitle: ravenButtonTitle, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
+            let raven = UIBarButtonItem(customView: btn)
+            raven.tag = 123
+            
+            if navigationItem.rightBarButtonItems == nil {
+                
+                navigationItem.rightBarButtonItems = [raven]
+                
+            } else {
+                
+                for (index, button) in navigationItem.rightBarButtonItems!.enumerated() {
+                    
+                    if button.tag == 123 {
+                        
+                        navigationItem.rightBarButtonItems!.remove(at: index)
+                    }
+                }
+                navigationItem.rightBarButtonItems!.append(raven)
+            }
+        }
+    }
     open weak var generalDelegate: GenericDelegate?
     open var menuAppeared: Bool { return self.fontsMenuIsAppeared }
     open var pageSize: CGSize { return CGSize(width: self.pageWidth, height: self.pageHeight) }
@@ -270,10 +294,42 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let font = UIFont(name: "Avenir-Light", size: 17)!
         setTranslucentNavigation(color: navBackground, tintColor: tintColor, titleColor: navText, andFont: font)
     }
+    
+    func configureButton(withTitle title: String = "",
+                         tintColor color: UIColor,
+                         imageName name: String,
+                         action: Selector? = nil) -> UIButton {
+        
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: name), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: 0)
+        let attributed: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 12, weight: .regular)]
+        var configuredTitle = title
+        
+        if title.toDouble != 0 {
+            
+            configuredTitle = title.toDouble.configureValue()
+        }
+        
+        let attString = NSAttributedString(string: configuredTitle, attributes: attributed)
+        button.setAttributedTitle(attString, for: .normal)
+        button.tintColor = color
+        button.sizeToFit()
+        
+        if let selector = action {
+            
+            button.addTarget(self, action: selector, for: .touchUpInside)
+        }
+        return button
+    }
 
     func configureNavBarButtons() {
 
         // Navbar buttons
+        let btn = configureButton(withTitle: ravenButtonTitle, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
+        let raven = UIBarButtonItem(customView: btn)
+        raven.tag = 123
+        
         let shareIcon = UIImage(readerImageNamed: "icon-navbar-share")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let audioIcon = UIImage(readerImageNamed: "icon-navbar-tts")?.ignoreSystemTint(withConfiguration: self.readerConfig) //man-speech-icon
         let closeIcon = UIImage(readerImageNamed: "icon-navbar-close")?.ignoreSystemTint(withConfiguration: self.readerConfig)
@@ -299,7 +355,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let font = UIBarButtonItem(image: fontIcon, style: .plain, target: self, action: #selector(presentFontsMenu))
         font.width = space
 
-        rightBarIcons.append(contentsOf: [font])
+        rightBarIcons.append(contentsOf: [font, raven])
         navigationItem.rightBarButtonItems = rightBarIcons
         
         if(self.readerConfig.displayTitle){

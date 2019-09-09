@@ -36,6 +36,38 @@ public protocol GenericDelegate: AnyObject {
     func reloadData(target: AnyObject?, data: Any?)
 }
 
+extension String {
+    
+    var toDouble: Double {
+        
+        return Double(self) ?? 0
+    }
+}
+extension Double {
+    
+    func configureValue() -> String {
+        
+        let value = Int(rounded())
+        
+        guard let formatedValue = numberFormatter.string(value) else {
+            
+            return "\(value)"
+        }
+        
+        let values = formatedValue.components(separatedBy: ".")
+        
+        switch values.count - 1 {
+            
+        case 1: return values[0] + "K"
+        case 2: return values[0] + "M"
+        case 3: return values[0] + "B"
+            
+        default: return "\(value)"
+        }
+    }
+}
+
+
 
 /// The base reader class
 open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

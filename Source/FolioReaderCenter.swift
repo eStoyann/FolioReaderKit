@@ -101,6 +101,21 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open fileprivate(set) var currentPage: FolioReaderPage?
 
     //custom implemetnation
+    open var removeRavenButton = false {
+        willSet {
+            
+            if navigationItem.rightBarButtonItems != nil, newValue {
+
+                for (index, button) in navigationItem.rightBarButtonItems!.enumerated() {
+                    
+                    if button.tag == 123 {
+                        
+                        navigationItem.rightBarButtonItems!.remove(at: index)
+                    }
+                }
+            }
+        }
+    }
     open var ravenButtonTitle: String = "" {
         didSet {
             

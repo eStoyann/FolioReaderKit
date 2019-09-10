@@ -101,7 +101,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open fileprivate(set) var currentPage: FolioReaderPage?
 
     //custom implemetnation
-    open var userID: String!
+    open var userID: Int!
     open var removeRavenButton = false {
         willSet {
             

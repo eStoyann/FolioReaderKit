@@ -11,6 +11,8 @@ import RealmSwift
 
 /// A Highlight object
 open class Highlight: Object {
+    
+    @objc open dynamic var userID: String!
     @objc open dynamic var bookId: String!
     @objc open dynamic var content: String!
     @objc open dynamic var contentPost: String!

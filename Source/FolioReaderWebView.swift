@@ -158,9 +158,13 @@ open class FolioReaderWebView: UIWebView {
             }
 
             let pageNumber = folioReader.readerCenter?.currentPageNumber ?? 0
-            let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
-            let highlight = Highlight.matchHighlight(match)
-            highlight?.persist(withConfiguration: self.readerConfig)
+            
+            if let id = readerContainer?.centerViewController?.userID {
+                
+                let match = Highlight.MatchingHighlight(userID: String(id), text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
+                let highlight = Highlight.matchHighlight(match)
+                highlight?.persist(withConfiguration: self.readerConfig)
+            }
 
         } catch {
             print("Could not receive JSON")
@@ -184,9 +188,13 @@ open class FolioReaderWebView: UIWebView {
             guard let bookId = (self.book.name as NSString?)?.deletingPathExtension else { return }
             
             let pageNumber = folioReader.readerCenter?.currentPageNumber ?? 0
-            let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
-            if let highlight = Highlight.matchHighlight(match) {
-                self.folioReader.readerCenter?.presentAddHighlightNote(highlight, edit: false)
+            
+            if let id = readerContainer?.centerViewController?.userID {
+                
+                let match = Highlight.MatchingHighlight(userID: String(id), text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
+                if let highlight = Highlight.matchHighlight(match) {
+                    self.folioReader.readerCenter?.presentAddHighlightNote(highlight, edit: false)
+                }
             }
         } catch {
             print("Could not receive JSON")

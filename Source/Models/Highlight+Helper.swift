@@ -98,6 +98,30 @@ extension Highlight {
             completion?(error)
         }
     }
+    
+    /// Return a Highlight by userID
+    ///
+    /// - Parameter:
+    ///   - readerConfig: Current folio reader configuration.
+    ///   - user Id: user id
+    /// - Returns: Return a Highlights
+    public static func all(by userID: String, withConfiguration readerConfig: FolioReaderConfig) -> [Highlight] {
+        
+        var highlights: [Highlight]?
+        let predicate = NSPredicate(format: "userID = %@", userID)
+        
+        do {
+            let realm = try Realm(configuration: readerConfig.realmConfiguration)
+            highlights = realm.objects(Highlight.self).filter(predicate).toArray(Highlight.self)
+            
+            return (highlights ?? [])
+            
+        } catch let error as NSError {
+            
+            print("Error on fetch all by user Id: \(error)")
+            return []
+        }
+    }
 
     /// Remove a Highlight
     ///
@@ -226,6 +250,8 @@ extension Highlight {
 extension Highlight {
 
     public struct MatchingHighlight {
+        
+        var userID: String
         var text: String
         var id: String
         var startOffset: String
@@ -252,6 +278,7 @@ extension Highlight {
             contentPost = Highlight.subString(ofContent: contentPost, fromRangeOfString: "<", withPattern: "^((.|\\s)*?)(?=<)")
 
             let highlight = Highlight()
+            highlight.userID = matchingHighlight.userID
             highlight.highlightId = matchingHighlight.id
             highlight.type = HighlightStyle.styleForClass(str.substring(with: match.range(at: 1))).rawValue
             highlight.date = Date()

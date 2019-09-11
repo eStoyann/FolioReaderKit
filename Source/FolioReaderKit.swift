@@ -182,7 +182,7 @@ extension FolioReader {
         get { return self.defaults.bool(forKey: kNightMode) }
         set (value) {
             self.defaults.set(value, forKey: kNightMode)
-
+            readerCenter.setupRavenButton(with: readerCenter.ravenButtonTitle)
             if let readerCenter = self.readerCenter {
                 UIView.animate(withDuration: 0.6, animations: {
                     _ = readerCenter.currentPage?.webView?.js("nightMode(\(self.nightMode))")

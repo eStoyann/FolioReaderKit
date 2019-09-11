@@ -101,46 +101,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open fileprivate(set) var currentPage: FolioReaderPage?
 
     //custom implemetnation
+    open var setupRaven = true
+    open var ravenButtonTitle: String = ""
     open var userID: Int!
-    open var removeRavenButton = false {
-        willSet {
-            
-            if navigationItem.rightBarButtonItems != nil, newValue {
-
-                for (index, button) in navigationItem.rightBarButtonItems!.enumerated() {
-                    
-                    if button.tag == 123 {
-                        
-                        navigationItem.rightBarButtonItems!.remove(at: index)
-                    }
-                }
-            }
-        }
-    }
-    open var ravenButtonTitle: String = "" {
-        didSet {
-            
-            let btn = configureButton(withTitle: ravenButtonTitle, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
-            let raven = UIBarButtonItem(customView: btn)
-            raven.tag = 123
-            
-            if navigationItem.rightBarButtonItems == nil {
-                
-                navigationItem.rightBarButtonItems = [raven]
-                
-            } else {
-                
-                for (index, button) in navigationItem.rightBarButtonItems!.enumerated() {
-                    
-                    if button.tag == 123 {
-                        
-                        navigationItem.rightBarButtonItems!.remove(at: index)
-                    }
-                }
-                navigationItem.rightBarButtonItems!.append(raven)
-            }
-        }
-    }
     open weak var generalDelegate: GenericDelegate?
     open var menuAppeared: Bool { return self.fontsMenuIsAppeared }
     open var pageSize: CGSize { return CGSize(width: self.pageWidth, height: self.pageHeight) }
@@ -330,6 +293,35 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open func enableScrollBetweenChapters(scrollEnabled: Bool) {
         self.collectionView.isScrollEnabled = scrollEnabled
     }
+    
+    /// setup Raven Button
+    open func setupRavenButton(with title: String) {
+        
+        guard setupRaven else {
+            
+            return
+        }
+        
+        let btn = configureButton(withTitle: title, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
+        let raven = UIBarButtonItem(customView: btn)
+        raven.tag = 123
+        
+        if navigationItem.rightBarButtonItems == nil {
+            
+            navigationItem.rightBarButtonItems = [raven]
+            
+        } else {
+            
+            for (index, button) in navigationItem.rightBarButtonItems!.enumerated() {
+                
+                if button.tag == 123 {
+                    
+                    navigationItem.rightBarButtonItems!.remove(at: index)
+                }
+            }
+            navigationItem.rightBarButtonItems!.append(raven)
+        }
+    }
 
     fileprivate func updateSubviewFrames() {
         self.pageIndicatorView?.frame = self.frameForPageIndicatorView()
@@ -390,9 +382,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func configureNavBarButtons() {
 
         // Navbar buttons
-        let btn = configureButton(withTitle: ravenButtonTitle, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
-        let raven = UIBarButtonItem(customView: btn)
-        raven.tag = 123
         
         let shareIcon = UIImage(readerImageNamed: "icon-navbar-share")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let audioIcon = UIImage(readerImageNamed: "icon-navbar-tts")?.ignoreSystemTint(withConfiguration: self.readerConfig) //man-speech-icon
@@ -419,8 +408,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let font = UIBarButtonItem(image: fontIcon, style: .plain, target: self, action: #selector(presentFontsMenu))
         font.width = space
 
-        rightBarIcons.append(contentsOf: [font, raven])
+        rightBarIcons.append(contentsOf: [font])
         navigationItem.rightBarButtonItems = rightBarIcons
+        setupRavenButton(with: ravenButtonTitle)
         
         if(self.readerConfig.displayTitle){
             navigationItem.title = book.title

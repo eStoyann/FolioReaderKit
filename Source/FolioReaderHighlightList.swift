@@ -40,7 +40,11 @@ public class FolioReaderHighlightList: UITableViewController {
             return
         }
 
-        self.highlights = Highlight.allByBookId(withConfiguration: self.readerConfig, bookId: bookId)
+        if let id = folioReader.readerCenter?.userID {
+            
+            self.highlights = Highlight.all(by: bookId, user: "\(id)", withConfiguration: readerConfig)
+        }
+//        self.highlights = Highlight.allByBookId(withConfiguration: self.readerConfig, bookId: bookId)
     }
 
     // MARK: - Table view data source

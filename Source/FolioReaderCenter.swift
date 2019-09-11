@@ -1474,7 +1474,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func presentChapterList(_ sender: UIBarButtonItem) {
         folioReader.saveReaderState()
 
-        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
+//        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
         let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
         highlight.genericDelegate = self
         let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)

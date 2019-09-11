@@ -122,6 +122,35 @@ extension Highlight {
             return []
         }
     }
+    
+    /// Return a list of Highlights with a given ID
+    ///
+    /// - Parameters:
+    ///   - readerConfig: Current folio reader configuration.
+    ///   - bookId: Book ID
+    ///   - userId: User ID
+    ///   - page: Page number
+    /// - Returns: Return a list of Highlights
+    public static func all(by bookId: String, user id: String, andPage page: NSNumber? = nil, withConfiguration readerConfig: FolioReaderConfig) -> [Highlight] {
+        
+        var highlights: [Highlight]?
+        var predicate = NSPredicate(format: "bookId = %@ && userID = %@", bookId, id)
+        
+        if let page = page {
+            predicate = NSPredicate(format: "bookId = %@ && page = %@ && userID = %@", bookId, page, id)
+        }
+        
+        do {
+            
+            let realm = try Realm(configuration: readerConfig.realmConfiguration)
+            highlights = realm.objects(Highlight.self).filter(predicate).toArray(Highlight.self)
+            return (highlights ?? [])
+            
+        } catch let error as NSError {
+            print("Error on fetch all by book Id: \(error)")
+            return []
+        }
+    }
 
     /// Remove a Highlight
     ///

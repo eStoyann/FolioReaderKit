@@ -8,6 +8,54 @@
 
 import UIKit
 
+enum LanguageMode {
+    
+    case request, localization
+}
+
+/// Language storage
+var languageStorage: String {
+    
+    get {
+        
+        return UserDefaults.standard.object(forKey: "lang") as? String ?? "en"
+    }
+    
+    set {
+        
+        UserDefaults.standard.set(newValue, forKey: "lang")
+    }
+}
+
+extension String {
+    
+    func localizableString(withLocalization localization: String, comment: String = "") -> String {
+        
+        guard let path = Bundle.main.path(forResource: localization, ofType: "lproj"),
+            let bundle = Bundle(path: path) else {
+                return ""
+        }
+        return NSLocalizedString(self, tableName: nil, bundle: bundle, value: "", comment: comment)
+    }
+}
+
+extension NSObject {
+    
+    /// Current language application
+    ///
+    /// - Returns: language as string
+    func currentLanguage(by mode: LanguageMode) -> String {
+        
+        switch mode {
+            
+        case .localization: return languageStorage
+            
+        case .request: return languageStorage == "uk" ? "ua" : languageStorage
+            
+        }
+    }
+}
+
 class PageViewController: UIPageViewController {
 
     var segmentedControl: UISegmentedControl!
@@ -39,6 +87,7 @@ class PageViewController: UIPageViewController {
         super.viewDidLoad()
 
         segmentedControl = UISegmentedControl(items: segmentedControlItems)
+        segmentedControl.setTitle("Highlights".localizableString(withLocalization: currentLanguage(by: .localization)), forSegmentAt: 0)
         segmentedControl.addTarget(self, action: #selector(didSwitchMenu(_:)), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = index
         segmentedControl.setWidth(100, forSegmentAt: 0)

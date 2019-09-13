@@ -294,6 +294,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView.isScrollEnabled = scrollEnabled
     }
     
+    @objc func didTapRavenButton() {
+        
+        generalDelegate?.reloadData(target: nil, data: 123) // 123 tag raven button; fast 'gamnocode'
+    }
+    
     /// setup Raven Button
     open func setupRavenButton(with title: String) {
         
@@ -302,7 +307,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         
-        let btn = configureButton(withTitle: title, tintColor: folioReader.isNight(.white, .black), imageName: "raven")
+        let btn = configureButton(withTitle: title, tintColor: folioReader.isNight(.white, .black), imageName: "raven", action: #selector(didTapRavenButton))
         let raven = UIBarButtonItem(customView: btn)
         raven.tag = 123
         

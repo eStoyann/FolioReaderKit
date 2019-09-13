@@ -187,6 +187,24 @@ extension Highlight {
         }
     }
     
+    /// Remove a Highlight by ID nad user ID
+    ///
+    /// - Parameters:
+    ///   - readerConfig: Current folio reader configuration.
+    ///   - highlightId: The ID to be removed
+    public static func remove(withConfiguration readerConfig: FolioReaderConfig, highlightId: String, userID: String) {
+        var highlight: Highlight?
+        let predicate = NSPredicate(format:"highlightId = %@ && userID = %@", highlightId, userID)
+        
+        do {
+            let realm = try Realm(configuration: readerConfig.realmConfiguration)
+            highlight = realm.objects(Highlight.self).filter(predicate).toArray(Highlight.self).first
+            highlight?.remove(withConfiguration: readerConfig)
+        } catch let error as NSError {
+            print("Error on remove highlight by id: \(error)")
+        }
+    }
+    
     /// Return a Highlight by ID
     ///
     /// - Parameter:

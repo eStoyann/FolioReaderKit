@@ -126,10 +126,12 @@ open class FolioReaderWebView: UIWebView {
     }
 
     func remove(_ sender: UIMenuController?) {
-        if let removedId = js("removeThisHighlight()") {
-            Highlight.removeById(withConfiguration: self.readerConfig, highlightId: removedId)
+        
+        if let userID = readerContainer?.centerViewController?.userID, let removedId = js("removeThisHighlight()") {
+            
+            Highlight.remove(withConfiguration: readerConfig, highlightId: removedId, userID: "\(userID)")
+            setMenuVisible(false)
         }
-        setMenuVisible(false)
     }
 
     @objc func highlight(_ sender: UIMenuController?) {

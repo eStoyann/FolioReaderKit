@@ -509,9 +509,51 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             } else {
                 webView.isOneWord = false
             }
+            if let selectedText = selectedText, selectedText.count > 256, let controller = folioReader.readerCenter {
+                
+                let ok = UIAlertAction(title: "OK".localizableString(withLocalization: currentLanguage(by: .localization)), style: .default) { _ in
+                    
+                    controller.setNeedsStatusBarAppearanceUpdate()
+                }
+                alert(onController: controller, message: "The limit of characters for one quote should not exceed 256".localizableString(withLocalization: currentLanguage(by: .localization)), actions: [ok])
+            }
         }
 
         return super.canPerformAction(action, withSender: sender)
+    }
+    
+    private func alert(onController controller: UIViewController, title: String = "Error", message: String, actions: [UIAlertAction]? = nil, animated: Bool = true, _ completion: (() -> Void)? = nil) {
+        
+        let localizedTitle = title.localizableString(withLocalization: currentLanguage(by: .localization))
+        let localizedMessage = message.localizableString(withLocalization: currentLanguage(by: .localization))
+        
+        let alert = UIAlertController(title: localizedTitle, message: localizedMessage, preferredStyle: .alert)
+        
+        if let actions = actions {
+            
+            for action in actions {
+                
+                alert.addAction(action)
+            }
+        }
+        
+        if controller.presentedViewController == nil {
+            
+            controller.present(alert, animated: animated) {
+                
+                if actions == nil {
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        
+                        alert.dismiss(animated: true, completion: {
+                            
+                            controller.setNeedsStatusBarAppearanceUpdate()
+                            completion?()
+                        })
+                    }
+                }
+            }
+        }
     }
 
     // MARK: ColorView fix for horizontal layout

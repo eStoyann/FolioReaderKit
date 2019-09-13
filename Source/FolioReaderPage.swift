@@ -503,7 +503,10 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         }
 
         if !webView.isShare && !webView.isColors {
-            if let result = webView.js("getSelectedText()") , result.components(separatedBy: " ").count == 1 {
+            
+            let selectedText = webView.js("getSelectedText()")
+            
+            if let result = selectedText , result.components(separatedBy: " ").count == 1 {
                 webView.isOneWord = true
                 webView.createMenu(options: false)
             } else {

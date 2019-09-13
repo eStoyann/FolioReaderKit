@@ -48,7 +48,7 @@ open class FolioReaderWebView: UIWebView {
     // MARK: - UIMenuController
 
     open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        guard readerConfig.useReaderMenuController else {
+        guard readerConfig.useReaderMenuController, let id = readerContainer?.centerViewController?.userID else {
             return super.canPerformAction(action, withSender: sender)
         }
 
@@ -57,7 +57,8 @@ open class FolioReaderWebView: UIWebView {
         } else if isColors {
             return false
         } else {
-            if (action == #selector(highlight(_:)) && Highlight.all(withConfiguration: self.readerConfig).count <= 30)
+            
+            if (action == #selector(highlight(_:)) && Highlight.all(by: "\(id)", withConfiguration: readerConfig).count <= 30)
 //                || action == #selector(highlightWithNote(_:))
 //                || action == #selector(updateHighlightNote(_:))
 //                || (action == #selector(define(_:)) && isOneWord)

@@ -518,7 +518,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
                     
                     controller.setNeedsStatusBarAppearanceUpdate()
                 }
-                alert(onController: controller, message: "The limit of characters for one quote should not exceed 256".localizableString(withLocalization: currentLanguage(by: .localization)), actions: [ok])
+                alert(onController: controller, message: "The limit of characters for one quote should not exceed 256", actions: [ok])
             }
         }
 

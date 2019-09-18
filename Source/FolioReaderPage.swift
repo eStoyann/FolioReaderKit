@@ -495,34 +495,35 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     // MARK: UIMenu visibility
 
     override open func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        guard let webView = webView else { return false }
-
-        if UIMenuController.shared.menuItems?.count == 0 {
-            webView.isColors = false
-            webView.createMenu(options: false)
-        }
-
-        if !webView.isShare && !webView.isColors {
-            
-            let selectedText = webView.js("getSelectedText()")
-            
-            if let result = selectedText , result.components(separatedBy: " ").count == 1 {
-                webView.isOneWord = true
-                webView.createMenu(options: false)
-            } else {
-                webView.isOneWord = false
-            }
-            if let selectedText = selectedText, selectedText.count > 256, let controller = folioReader.readerCenter {
-                
-                let ok = UIAlertAction(title: "OK".localizableString(withLocalization: currentLanguage(by: .localization)), style: .default) { _ in
-                    
-                    controller.setNeedsStatusBarAppearanceUpdate()
-                }
-                alert(onController: controller, message: "The limit of characters for one quote should not exceed 256", actions: [ok])
-            }
-        }
-
-        return super.canPerformAction(action, withSender: sender)
+        return true
+//        guard let webView = webView else { return false }
+//
+//        if UIMenuController.shared.menuItems?.count == 0 {
+//            webView.isColors = false
+//            webView.createMenu(options: false)
+//        }
+//
+//        if !webView.isShare && !webView.isColors {
+//
+//            let selectedText = webView.js("getSelectedText()")
+//
+//            if let result = selectedText , result.components(separatedBy: " ").count == 1 {
+//                webView.isOneWord = true
+//                webView.createMenu(options: false)
+//            } else {
+//                webView.isOneWord = false
+//            }
+//            if let selectedText = selectedText, selectedText.count > 256, let controller = folioReader.readerCenter {
+//
+//                let ok = UIAlertAction(title: "OK".localizableString(withLocalization: currentLanguage(by: .localization)), style: .default) { _ in
+//
+//                    controller.setNeedsStatusBarAppearanceUpdate()
+//                }
+//                alert(onController: controller, message: "The limit of characters for one quote should not exceed 256", actions: [ok])
+//            }
+//        }
+//
+//        return super.canPerformAction(action, withSender: sender)
     }
     
     private func alert(onController controller: UIViewController, title: String = "Error", message: String, actions: [UIAlertAction]? = nil, animated: Bool = true, _ completion: (() -> Void)? = nil) {

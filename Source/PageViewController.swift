@@ -62,7 +62,7 @@ class PageViewController: UIPageViewController {
     var viewList = [UIViewController]()
     var segmentedControlItems = [String]()
 //    var viewControllerOne: UIViewController!
-    var viewControllerTwo: UIViewController!
+//    var viewControllerTwo: UIViewController!
     var index: Int
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -86,19 +86,19 @@ class PageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segmentedControl = UISegmentedControl(items: segmentedControlItems)
-        segmentedControl.setTitle("Highlights".localizableString(withLocalization: currentLanguage(by: .localization)), forSegmentAt: 0)
-        segmentedControl.addTarget(self, action: #selector(didSwitchMenu(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = index
-        segmentedControl.setWidth(100, forSegmentAt: 0)
+//        segmentedControl = UISegmentedControl(items: segmentedControlItems)
+//        segmentedControl.setTitle("Highlights".localizableString(withLocalization: currentLanguage(by: .localization)), forSegmentAt: 0)
+//        segmentedControl.addTarget(self, action: #selector(didSwitchMenu(_:)), for: .valueChanged)
+//        segmentedControl.selectedSegmentIndex = index
+//        segmentedControl.setWidth(100, forSegmentAt: 0)
         //        segmentedControl.setWidth(100, forSegmentAt: 1)
         self.navigationItem.titleView = segmentedControl
 
-        viewList = [viewControllerTwo]
+//        viewList = [viewControllerTwo]
         //        viewControllerOne,
 
         //        viewControllerOne.didMove(toParent: self)
-        viewControllerTwo.didMove(toParent: self)
+//        viewControllerTwo.didMove(toParent: self)
 
         self.delegate = self
         self.dataSource = self

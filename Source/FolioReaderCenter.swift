@@ -251,11 +251,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         // Page indicator view
         if (self.readerConfig.hidePageIndicator == false) {
-            let frame = self.frameForPageIndicatorView()
-            pageIndicatorView = FolioReaderPageIndicator(frame: frame, readerConfig: readerConfig, folioReader: folioReader)
-            if let pageIndicatorView = pageIndicatorView {
-                view.addSubview(pageIndicatorView)
-            }
+//            let frame = self.frameForPageIndicatorView()
+//            pageIndicatorView = FolioReaderPageIndicator(frame: frame, readerConfig: readerConfig, folioReader: folioReader)
+//            if let pageIndicatorView = pageIndicatorView {
+//                view.addSubview(pageIndicatorView)
+//            }
         }
 
         guard let readerContainer = readerContainer else { return }
@@ -400,9 +400,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let space = 70 as CGFloat
 
         let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
-        let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
+//        let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
 
-        navigationItem.leftBarButtonItems = [menu, toc]
+        navigationItem.leftBarButtonItems = [menu] //, toc
 
         var rightBarIcons = [UIBarButtonItem]()
 
@@ -1471,20 +1471,20 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
      Present chapter list
      */
     @objc func presentChapterList(_ sender: UIBarButtonItem) {
-        folioReader.saveReaderState()
+//        folioReader.saveReaderState()
 
 //        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
-        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
-        highlight.genericDelegate = self
-        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
+//        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
+//        highlight.genericDelegate = self
+//        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
 
         //        pageController.viewControllerOne = chapter
-        pageController.viewControllerTwo = highlight
-        pageController.segmentedControlItems = [readerConfig.localizedHighlightsTitle]
+//        pageController.viewControllerTwo = highlight
+//        pageController.segmentedControlItems = [readerConfig.localizedHighlightsTitle]
         //        readerConfig.localizedContentsTitle,
 
-        let nav = UINavigationController(rootViewController: pageController)
-        present(nav, animated: true, completion: nil)
+//        let nav = UINavigationController(rootViewController: pageController)
+//        present(nav, animated: true, completion: nil)
     }
 
     /**

@@ -48,28 +48,29 @@ open class FolioReaderWebView: UIWebView {
     // MARK: - UIMenuController
 
     open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        guard readerConfig.useReaderMenuController, let id = readerContainer?.centerViewController?.userID else {
-            return super.canPerformAction(action, withSender: sender)
-        }
-
-        if isShare {
-            return false
-        } else if isColors {
-            return false
-        } else {
-            
-            if (action == #selector(highlight(_:)) && Highlight.all(by: "\(id)", withConfiguration: readerConfig).count <= 30)
-//                || action == #selector(highlightWithNote(_:))
-//                || action == #selector(updateHighlightNote(_:))
-//                || (action == #selector(define(_:)) && isOneWord)
-//                || (action == #selector(play(_:)) && (book.hasAudio || readerConfig.enableTTS))
-//                || (action == #selector(share(_:)) && readerConfig.allowSharing)
-                //|| (action == #selector(copy(_:)) && readerConfig.allowSharing)
-            {
-                return true
-            }
-            return false
-        }
+        return false
+//        guard readerConfig.useReaderMenuController, let id = readerContainer?.centerViewController?.userID else {
+//            return super.canPerformAction(action, withSender: sender)
+//        }
+//
+//        if isShare {
+//            return false
+//        } else if isColors {
+//            return false
+//        } else {
+//            
+//            if (action == #selector(highlight(_:)) && Highlight.all(by: "\(id)", withConfiguration: readerConfig).count <= 30)
+////                || action == #selector(highlightWithNote(_:))
+////                || action == #selector(updateHighlightNote(_:))
+////                || (action == #selector(define(_:)) && isOneWord)
+////                || (action == #selector(play(_:)) && (book.hasAudio || readerConfig.enableTTS))
+////                || (action == #selector(share(_:)) && readerConfig.allowSharing)
+//                //|| (action == #selector(copy(_:)) && readerConfig.allowSharing)
+//            {
+//                return true
+//            }
+//            return false
+//        }
     }
 
     // MARK: - UIMenuController - Actions

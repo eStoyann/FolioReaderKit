@@ -495,7 +495,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     // MARK: UIMenu visibility
 
     override open func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return true
+        return false
 //        guard let webView = webView else { return false }
 //
 //        if UIMenuController.shared.menuItems?.count == 0 {
